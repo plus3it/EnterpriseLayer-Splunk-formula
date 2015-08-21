@@ -22,11 +22,24 @@
 #
 #################################################################
 
-{% set whereAmI = salt['grains.get']('deployment_env', '') %}
+{%- set whereAmI = salt['grains.get']('deployment_env', '') %}
+{%- set repoRoot = salt['grains.get']('repo_hbss', '') %}
+{%- set splunkRoot = '/opt/splunkforwarder' %}
+{%- set splunkEtc = splunkRoot + '/etc' %}
+{%- set LogCfg = 'log-local.cfg' %}
 
-{% if whereAmI %}
-notify_{{ whereAmI }}:
-  cmd.run:
-    - name: 'echo "This instance is in {{ whereAmI }}."'
-    - cwd: '/root'
-{% endif %}
+
+# Install the client log config
+splunk_LogCfg:
+  file.managed:
+    - name: {{ splunkEtc }}/{{ LogCfg }}
+    - source: {{ repoRoot }}/{{ LogCfg }}
+    - source_hash: md5={{ repoRoot }}/{{ LogCfg }}.MD5
+    - user: root
+    - group: root
+    - mode: 0600
+
+## deployment_type: dev
+## deployment_env: UC2S
+## repo_hbss: salt://repo
+## repo_splunk: salt://repo
