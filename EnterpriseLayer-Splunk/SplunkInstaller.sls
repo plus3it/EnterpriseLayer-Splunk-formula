@@ -67,6 +67,7 @@ splunk_acceptLicense:
     - require:
       - file: splunk_LogCfg
       - file: splunk_CltCfg
+    - unless: 'test -f {{ splunkEtc }}/auth/splunkweb/cert.pem'
 
 # Set up Splunk agent boot-scripts
 splunk_enableBoot:
