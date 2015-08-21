@@ -60,3 +60,17 @@ splunk_CltCfg:
     - require:
       - pkg: splunk_package
 
+# Accept Splunk license (so it doesn't wait-on-input at first start)
+splunk_acceptLicense:
+  cmd.run:
+    - name: '{{ splunkBin }}/splunk start --accept-license'
+    - require:
+      - file: splunk_LogCfg
+      - file: splunk_CltCfg
+
+# Set up Splunk agent boot-scripts
+splunk_enableBoot:
+  cmd.run:
+    - name: '{{ splunkBin }}/splunk enable boot-start'
+    - require:
+      - cmd: splunk_acceptLicense
