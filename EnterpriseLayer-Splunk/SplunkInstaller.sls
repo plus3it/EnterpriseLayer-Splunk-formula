@@ -74,3 +74,19 @@ splunk_enableBoot:
     - name: '{{ splunkBin }}/splunk enable boot-start'
     - require:
       - cmd: splunk_acceptLicense
+    - unless: 'test -f /etc/init.d/splunk'
+
+# Ensure that service is enabled
+splunk_svcEnabled:
+  service.enabled:
+    - name: 'splunk'
+    - require:
+      - cmd: splunk_enableBoot
+
+# Ensure that service is running
+splunk_svcRunning:
+  service.running:
+    - name: 'splunk'
+    - require:
+      - service: splunk_svcEnabled
+
