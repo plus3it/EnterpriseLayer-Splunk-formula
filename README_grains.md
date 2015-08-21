@@ -1,0 +1,6 @@
+This Salt formula makes use of externalized values. Externalization of values allows the project-managed state-files to both be rendered more portable without having to hard-code in potentially sensitive data. Externalized values may be stored either within SaltStack's "grains" construct or "pillars" construct. This example assumes the use of the "grains" construct.
+
+The states in this formula expect the following values to be defined:
+  - `repo_splunk:` Setting this value allows the Salt-states to determine where configuration file elements are being stored. Stored values should include the method and URI-root to the installable configuration file elements. Example values include 'salt://repo', 'http://reposerver', 's3://myrepo.s3-website-us-east-1.amazonaws.com', 'file:///var/tmp/stage', etc.
+  - `deployment_type:` Setting this value allows the Salt-states to determine which type of deployment the states are supporting. Example values include 'dev', 'prod', etc. (not currently implemented)
+  - `deployment_env:` Setting this value allows the Salt-states to determine what type of hosting-environment the states are supporting. Example values include 'AWS', 'OpenStack', etc. (not currently implemented)
