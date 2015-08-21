@@ -26,10 +26,15 @@
 {%- set repoRoot = salt['grains.get']('repo_hbss', '') %}
 {%- set splunkRoot = '/opt/splunkforwarder' %}
 {%- set splunkEtc = splunkRoot + '/etc' %}
-{%- set splunkLcl = splunkRoot + '/system/local' %}
+{%- set splunkBin = splunkRoot + '/bin' %}
+{%- set splunkLcl = splunkEtc + '/system/local' %}
 {%- set LogCfg = 'log-local.cfg' %}
 {%- set CltCfg = 'deploymentclient.conf' %}
 
+# Install the Splunk client RPM
+splunk_package:
+  pkg.installed:
+    - name: splunkforwarder
 
 # Install the client log config
 splunk_LogCfg:
@@ -40,6 +45,8 @@ splunk_LogCfg:
     - user: root
     - group: root
     - mode: 0600
+    - require:
+      - pkg: splunk_package
 
 # Install the client agent config
 splunk_CltCfg:
@@ -50,4 +57,6 @@ splunk_CltCfg:
     - user: root
     - group: root
     - mode: 0600
+    - require:
+      - pkg: splunk_package
 
