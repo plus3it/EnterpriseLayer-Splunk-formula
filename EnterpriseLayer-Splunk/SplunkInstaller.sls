@@ -26,7 +26,9 @@
 {%- set repoRoot = salt['grains.get']('repo_hbss', '') %}
 {%- set splunkRoot = '/opt/splunkforwarder' %}
 {%- set splunkEtc = splunkRoot + '/etc' %}
+{%- set splunkLcl = splunkRoot + '/system/local' %}
 {%- set LogCfg = 'log-local.cfg' %}
+{%- set CltCfg = 'deploymentclient.conf' %}
 
 
 # Install the client log config
@@ -39,7 +41,13 @@ splunk_LogCfg:
     - group: root
     - mode: 0600
 
-## deployment_type: dev
-## deployment_env: UC2S
-## repo_hbss: salt://repo
-## repo_splunk: salt://repo
+# Install the client agent config
+splunk_CltCfg:
+  file.managed:
+    - name: {{ splunkLcl }}/{{ CltCfg }}
+    - source: {{ repoRoot }}/{{ CltCfg }}
+    - source_hash: md5={{ repoRoot }}/{{ CltCfg }}.MD5
+    - user: root
+    - group: root
+    - mode: 0600
+
