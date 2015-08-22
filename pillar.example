@@ -1,0 +1,35 @@
+splunk:
+
+  #####################################################################
+  # Required parameters
+  # Uncomment and set all required parameters or the formula will fail
+  #####################################################################
+
+  # source uri for the repo containing the splunk configuration files; this is
+  # prepended to each of the required filename parameters below and used as
+  # the source for placing the files on the salt minion
+  #repo_uri: ''
+
+  # filename of the splunk log configuration file
+  #log_config_file: ''
+
+  # filename containing the hash matching the log configuration file
+  #log_config_hash_file: ''
+
+  # filename of the splunk client configuration file
+  #client_config_file: ''
+
+  # filename containing the hash matching the client configuration file
+  #client_config_hash_file: ''
+
+  ######################
+  # Optional parameters
+  ######################
+
+  # Directory where splunk is installed to the system
+  #root_dir: '/opt/splunkforwarder'
+
+  # list of ports to open outbound for splunk communication
+  #ports:
+  #  - 8089
+  #  - 9997

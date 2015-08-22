@@ -1,12 +1,25 @@
 #
 # This salt state adds the requisite iptables exceptions to the
 #      INPUT filters to allow communications between the local
-#      Splunk client-agent and the remote Splunk Enterprise 
+#      Splunk client-agent and the remote Splunk Enterprise
 #      collector service.
 #
 #################################################################
 
-{%- set splunkPorts = [ '8089', '9997' ] %}
+{#- ################################## #}
+{#- # Optional parameters from pillar  #}
+{#- ################################## #}
+
+{#- # Get splunk ports from pillar, or default to `[ 8089, 9997 ]` #}
+
+{%- set splunkPorts = salt['pillar.get'](
+  'splunk:ports', 
+  [ '8089', '9997' ]) %}
+
+{#- ################################## #}
+{#- # Internal variables               #}
+{#- ################################## #}
+
 {%- set fwFile = '/etc/sysconfig/iptables' %}
 {%- set ruleChain = 'OUTPUT' %}
 
