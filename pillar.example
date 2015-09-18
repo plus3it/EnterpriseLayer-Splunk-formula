@@ -8,28 +8,38 @@ splunk:
   # source uri for the repo containing the splunk configuration files; this is
   # prepended to each of the required filename parameters below and used as
   # the source for placing the files on the salt minion
-  #repo_uri: ''
+  #repo_uri_host: 'http://S3BUCKET.F.Q.D.N'
+  #repo_uri_root_path: 'splunk/splunkforwarder'
+  #repo_uri_config_path: 'config/prod'
+  #repo_uri_config_path: 'config/test'
+  #repo_uri_config_path: 'config/dev'
 
   # filename of the splunk log configuration file
-  #log_config_file: ''
+  #log_config_file: 'log-local.cfg'
 
   # filename containing the hash matching the log configuration file
-  #log_config_hash_file: ''
+  #log_config_hash_file: 'log-local.cfg.SHA512'
 
   # filename of the splunk client configuration file
-  #client_config_file: ''
+  #client_config_file: 'deploymentclient.conf'
 
   # filename containing the hash matching the client configuration file
-  #client_config_hash_file: ''
+  #client_config_hash_file: 'deploymentclient.conf.SHA512'
+
+  # Directory where splunk is installed to the system
+  #install_root_dir: '/opt/splunkforwarder'
 
   ######################
   # Optional parameters
   ######################
 
-  # Directory where splunk is installed to the system
-  #root_dir: '/opt/splunkforwarder'
+  # Name of RPM to download
+  #package_name: 'splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm'
+
+  # Name of HAS to download 
+  #package_name: 'splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm.SHA512'
 
   # list of ports to open outbound for splunk communication
-  #ports:
+  #client_out_ports:
   #  - 8089
   #  - 9997
