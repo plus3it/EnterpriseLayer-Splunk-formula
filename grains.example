@@ -1,4 +1,0 @@
-deployment_type: dev
-deployment_env: AWS
-repo_hbss: salt://repo
-repo_splunk: salt://repo
