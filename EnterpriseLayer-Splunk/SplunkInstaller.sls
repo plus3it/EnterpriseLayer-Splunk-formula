@@ -8,7 +8,7 @@
 #      pillar definitions not bundled with these states. These
 #      externalized definitions are bundled separately from
 #      these formulae to ensure portability of the states
-#      without having to hard-code potentially sensitive 
+#      without having to hard-code potentially sensitive
 #      information into the formula's state definitions.
 #
 #      To use these states, ensure that the deployment-target's
@@ -22,14 +22,34 @@
 #
 #################################################################
 
-{%- set whereAmI = salt['grains.get']('deployment_env', '') %}
-{%- set repoRoot = salt['grains.get']('repo_hbss', '') %}
-{%- set splunkRoot = '/opt/splunkforwarder' %}
-{%- set splunkEtc = splunkRoot + '/etc' %}
-{%- set splunkBin = splunkRoot + '/bin' %}
-{%- set splunkLcl = splunkEtc + '/system/local' %}
-{%- set LogCfg = 'log-local.cfg' %}
-{%- set CltCfg = 'deploymentclient.conf' %}
+{#- ################################## #}
+{#- # Required parameters from pillar  #}
+{#- ################################## #}
+
+{%- set repoRoot = pillar['splunk']['repo_uri'] %}
+{%- set LogCfg = pillar['splunk']['log_config_file'] %}
+{%- set LogCfg_hash = pillar['splunk']['log_config_hash_file'] %}
+{%- set CltCfg = pillar['splunk']['client_config_file'] %}
+{%- set CltCfg_hash = pillar['splunk']['client_config_hash_file'] %}
+
+{#- ################################## #}
+{#- # Optional parameters from pillar  #}
+{#- ################################## #}
+
+{#- Get the splunk root_dir from pillar, or default to #}
+{#- `/opt/splunkforwarder` #}
+
+{%- set splunkRoot = salt['pillar.get'](
+    'splunk:root_dir',
+    '/opt/splunkforwarder') %}
+
+{#- ################################## #}
+{# Internal variables                  #}
+{#- ################################## #}
+
+{%- set splunkEtc = splunkRoot ~ '/etc' %}
+{%- set splunkBin = splunkRoot ~ '/bin' %}
+{%- set splunkLcl = splunkEtc ~ '/system/local' %}
 
 # Install the Splunk client RPM
 splunk_package:
@@ -39,9 +59,9 @@ splunk_package:
 # Install the client log config
 splunk_LogCfg:
   file.managed:
-    - name: {{ splunkEtc }}/{{ LogCfg }}
-    - source: {{ repoRoot }}/{{ LogCfg }}
-    - source_hash: md5={{ repoRoot }}/{{ LogCfg }}.MD5
+    - name: {{ splunkEtc ~ '/' ~ LogCfg }}
+    - source: {{ repoRoot ~ '/' ~ LogCfg }}
+    - source_hash: {{ repoRoot ~ '/' ~ LogCfg_hash }}
     - user: root
     - group: root
     - mode: 0600
@@ -51,9 +71,9 @@ splunk_LogCfg:
 # Install the client agent config
 splunk_CltCfg:
   file.managed:
-    - name: {{ splunkLcl }}/{{ CltCfg }}
-    - source: {{ repoRoot }}/{{ CltCfg }}
-    - source_hash: md5={{ repoRoot }}/{{ CltCfg }}.MD5
+    - name: {{ splunkLcl ~ '/' ~ CltCfg }}
+    - source: {{ repoRoot ~ '/' ~ CltCfg }}
+    - source_hash: {{ repoRoot ~ '/' ~ CltCfg_hash }}
     - user: root
     - group: root
     - mode: 0600
@@ -90,4 +110,3 @@ splunk_svcRunning:
     - name: 'splunk'
     - require:
       - service: splunk_svcEnabled
-
