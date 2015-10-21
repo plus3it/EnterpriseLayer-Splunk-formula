@@ -37,7 +37,7 @@ splunk:
   #package_name: 'splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm'
 
   # Name of HAS to download 
-  #package_name: 'splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm.SHA512'
+  #package_hash: 'splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm.SHA512'
 
   # list of ports to open outbound for splunk communication
   #client_out_ports:
