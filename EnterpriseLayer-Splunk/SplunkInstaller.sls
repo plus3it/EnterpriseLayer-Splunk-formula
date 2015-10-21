@@ -58,6 +58,9 @@
 {%- set splunkBin = splunkRoot ~ '/bin' %}
 {%- set splunkLcl = splunkEtc ~ '/system/local' %}
 
+{%- set client_name = pillar['splunk']['client_name'] %}
+{%- set server_name = pillar['splunk']['server_name'] %}
+
 # Install the Splunk client RPM
 splunk_package:
   pkg.installed:
@@ -80,11 +83,16 @@ splunk_LogCfg:
 splunk_CltCfg:
   file.managed:
     - name: {{ splunkLcl ~ '/' ~ CltCfg }}
-    - source: {{ repoCfgPath ~ '/' ~ CltCfg }}
-    - source_hash: {{ repoCfgPath ~ '/' ~ CltCfg_hash }}
     - user: root
     - group: root
     - mode: 0600
+    - contents: |
+        [deployment-client]
+        disabled = false
+        clientname =  {{ client_name }}
+
+        [target-broker:deploymentServer]
+        targetUri = {{ server_name }}
     - require:
       - pkg: splunk_package
 
