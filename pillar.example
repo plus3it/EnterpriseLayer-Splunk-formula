@@ -29,6 +29,10 @@ splunk:
   # Directory where splunk is installed to the system
   #install_root_dir: '/opt/splunkforwarder'
 
+  # Values to be used in deploymentclient.conf file
+  #client_name: tmpnam.f.q.d.n
+  #server_name: server.f.q.d.n
+
   ######################
   # Optional parameters
   ######################
